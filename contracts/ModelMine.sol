@@ -3,14 +3,22 @@ pragma solidity ^0.4.8;
 contract ModelMine {
 
   Model[] models;
+  Gradient[] grads;
 
   struct IPFS {
     bytes32 first;
     bytes32 second;
   }
 
+  struct Gradient {
+    address from;
+    IPFS grads;
+    uint model_id;
+  }
+
   struct Model {
     IPFS weights;
+    IPFS grads;
   }
 
   function addModel(bytes32[] _weights) returns(uint256 model_index) {
@@ -26,8 +34,34 @@ contract ModelMine {
     return models.length-1;
   }
 
-  function getNumModels() returns(uint256 model_cnt) {
+  function addGradient(uint model_id, bytes32[] _grad_addr) returns(uint256 grad_index) {
+
+    IPFS memory grad_addr;
+    grad_addr.first = _grad_addr[0];
+    grad_addr.second = _grad_addr[1];
+
+    Gradient memory newGrad;
+    newGrad.grads = grad_addr;
+    newGrad.from = msg.sender;
+    newGrad.model_id = model_id;
+
+    grads.push(newGrad);
+
+    return grads.length-1;
+  }
+
+  function getNumModels() constant returns(uint256 model_cnt) {
     return models.length;
+  }
+
+  function getNumGradientsforModel(uint model_id) constant returns (uint num) {
+    num = 0;
+    for (uint i=0; i<grads.length; i++) {
+      if(grads[i].model_id == model_id) {
+        num += 1;
+      }
+    }
+    return num;
   }
 
   function getModel(uint model_i) constant returns (bytes32[]) {

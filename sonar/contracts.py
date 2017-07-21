@@ -58,6 +58,11 @@ class ModelMine():
         deploy_trans = self.transact.addModel([ipfs_address[0:32],ipfs_address[32:]])
         return self.call.getNumModels()-1
 
+    def submit_gradient(self,model_id,grad):
+        ipfs_address = self.ipfs.add_pyobj(grad)
+        deploy_trans = self.transact.addGradient(model_id,[ipfs_address[0:32],ipfs_address[32:]])
+        return self.call.getNumGradientsforModel(model_id)-1
+
     def __getitem__(self,model_id):
         if(model_id < len(self)):
             mca = self.call.getModel(model_id)
