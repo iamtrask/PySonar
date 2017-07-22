@@ -17,11 +17,20 @@ contract ModelMine {
   }
 
   struct Model {
+
+    address owner;
+
     IPFS weights;
     IPFS grads;
+
+    uint bounty;
+
+    uint initial_error;
+    uint target_error;
+
   }
 
-  function addModel(bytes32[] _weights) payable returns(uint256 model_index) {
+  function addModel(bytes32[] _weights, uint initial_error, uint target_error) payable returns(uint256 model_index) {
 
     IPFS memory weights;
     weights.first = _weights[0];
@@ -29,6 +38,13 @@ contract ModelMine {
 
     Model memory newModel;
     newModel.weights = weights;
+
+    newModel.bounty = msg.value;
+    newModel.owner = msg.sender;
+
+    newModel.initial_error = initial_error;
+    newModel.target_error = target_error;
+
     models.push(newModel);
 
     return models.length-1;
