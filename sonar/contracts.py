@@ -8,6 +8,10 @@ from os import listdir
 class ModelMine():
 
     def __init__(self,account=None,deploy_txn=None,web3_port=8545,ipfs_port=5001):
+        """Creates the base blockchain client object (web3), ipfs client object (ipfs),
+        and deploys the compiled contract. Thus, it assumes that you're working with a
+        local testrpc blockchain."""
+
 
         self.deploy_txn = deploy_txn
         self.web3 = Web3(KeepAliveRPCProvider(host='localhost', port=str(web3_port)))
@@ -21,6 +25,8 @@ class ModelMine():
             self.account = self.web3.eth.accounts[2]
 
     def compile_and_deploy(self,directory='contracts/'):
+        """This contract selects the contract associated with this python interface
+        compiles it, and deploys it to a locally hosted (testrpc) blockchain."""
 
         f = open('../contracts/ModelMine.sol','r')
         source = f.read()
@@ -28,7 +34,7 @@ class ModelMine():
 
         compiled = compile_source(source)['<stdin>:ModelMine']
 
-        contract = self.web3.eth.contract(
+        self.contract = self.web3.eth.contract(
             abi = compiled['abi'],
             bytecode = compiled['bin'],
             bytecode_runtime = compiled['bin-runtime'],
@@ -38,12 +44,7 @@ class ModelMine():
         if(self.deploy_txn is None):
             self.deploy_txn = contract.deploy()
         txn_receipt = self.web3.eth.getTransactionReceipt(self.deploy_txn)
-        contract_address = txn_receipt['contractAddress']
-
-        self.transact = contract.transact({
-            "from":self.web3.eth.accounts[2],
-            "to":contract_address,
-            })
+        self.contract_address = txn_receipt['contractAddress']
 
         self.call = contract.call({
             "from":self.web3.eth.accounts[2],
@@ -52,15 +53,28 @@ class ModelMine():
 
         return self.deploy_txn
 
+    def get_transaction(from_addr,value=None):
+        """I consistently forget the conventions for executing transactions against
+        compiled contracts. This function helps that to be easier for me."""
 
-    def submit_model(self,model):
+        txn = {}
+        txn["from"] = from_addr
+        txn["to"] = self.contract_address
+
+        if(value is not None):
+            txn["value"] = int(value)
+
+        transact_raw = self.contract.transact(txn)
+        return transact_raw
+
+    def submit_model(self,from,model):
         ipfs_address = self.ipfs.add_pyobj(model)
-        deploy_trans = self.transact.addModel([ipfs_address[0:32],ipfs_address[32:]])
+        deploy_trans = self.get_transaction(from).addModel([ipfs_address[0:32],ipfs_address[32:]])
         return self.call.getNumModels()-1
 
-    def submit_gradient(self,model_id,grad):
+    def submit_gradient(self,from,model_id,grad):
         ipfs_address = self.ipfs.add_pyobj(grad)
-        deploy_trans = self.transact.addGradient(model_id,[ipfs_address[0:32],ipfs_address[32:]])
+        deploy_trans = self..get_transaction(from).addGradient(model_id,[ipfs_address[0:32],ipfs_address[32:]])
         return self.call.getNumGradientsforModel(model_id)-1
 
     def __getitem__(self,model_id):
