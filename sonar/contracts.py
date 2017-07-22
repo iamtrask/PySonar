@@ -6,6 +6,9 @@ from os.path import isfile, join
 from os import listdir
 
 class ModelMine():
+    """This class is a python client wrapper around the ModelMine.sol contract,
+    giving easy to use python functions around the contract's functionality. It
+    currently assumes you're running on a local testrpc Ethereum blockchain."""
 
     def __init__(self,account=None,deploy_txn=None,web3_port=8545,ipfs_port=5001):
         """Creates the base blockchain client object (web3), ipfs client object (ipfs),
@@ -68,13 +71,27 @@ class ModelMine():
         return transact_raw
 
     def submit_model(self,from,model):
+        """This accepts a model from syft.nn, loads it into IPFS, and uploads
+        the IPFS address to the blockchain.
+
+        TODO: use best practices for storing IPFS addresses on the blockchain.
+
+        """
+
         ipfs_address = self.ipfs.add_pyobj(model)
         deploy_trans = self.get_transaction(from).addModel([ipfs_address[0:32],ipfs_address[32:]])
         return self.call.getNumModels()-1
 
     def submit_gradient(self,from,model_id,grad):
+        """This accepts gradients for a model from syft.nn and uploads them to
+        the blockchain (via IPFS), linked to a model by it's id.
+
+        TODO: modify syft.nn to actually have a "getGradients()" method call so
+        that there can be checks that keep people from uploading junk. Currently
+        any python object could be uploaded (which is obviously dangerous)."""
+
         ipfs_address = self.ipfs.add_pyobj(grad)
-        deploy_trans = self..get_transaction(from).addGradient(model_id,[ipfs_address[0:32],ipfs_address[32:]])
+        deploy_trans = self.get_transaction(from).addGradient(model_id,[ipfs_address[0:32],ipfs_address[32:]])
         return self.call.getNumGradientsforModel(model_id)-1
 
     def __getitem__(self,model_id):
