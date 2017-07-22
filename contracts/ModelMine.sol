@@ -21,7 +21,7 @@ contract ModelMine {
     IPFS grads;
   }
 
-  function addModel(bytes32[] _weights) returns(uint256 model_index) {
+  function addModel(bytes32[] _weights) payable returns(uint256 model_index) {
 
     IPFS memory weights;
     weights.first = _weights[0];

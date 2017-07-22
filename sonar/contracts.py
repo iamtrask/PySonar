@@ -70,7 +70,7 @@ class ModelMine():
         transact_raw = self.contract.transact(txn)
         return transact_raw
 
-    def submit_model(self,from_addr,model):
+    def submit_model(self,from_addr,model,bounty):
         """This accepts a model from syft.nn, loads it into IPFS, and uploads
         the IPFS address to the blockchain.
 
@@ -79,7 +79,7 @@ class ModelMine():
         """
 
         ipfs_address = self.ipfs.add_pyobj(model)
-        deploy_trans = self.get_transaction(from_addr).addModel([ipfs_address[0:32],ipfs_address[32:]])
+        deploy_trans = self.get_transaction(from_addr,value=self.web3.toWei(bounty,'ether')).addModel([ipfs_address[0:32],ipfs_address[32:]])
         return self.call.getNumModels()-1
 
     def submit_gradient(self,from_addr,model_id,grad):
