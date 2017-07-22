@@ -56,7 +56,7 @@ class ModelMine():
 
         return self.deploy_txn
 
-    def get_transaction(from_addr,value=None):
+    def get_transaction(self,from_addr,value=None):
         """I consistently forget the conventions for executing transactions against
         compiled contracts. This function helps that to be easier for me."""
 
