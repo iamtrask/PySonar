@@ -45,13 +45,13 @@ class ModelMine():
             )
 
         if(self.deploy_txn is None):
-            self.deploy_txn = contract.deploy()
+            self.deploy_txn = self.contract.deploy()
         txn_receipt = self.web3.eth.getTransactionReceipt(self.deploy_txn)
         self.contract_address = txn_receipt['contractAddress']
 
-        self.call = contract.call({
+        self.call = self.contract.call({
             "from":self.web3.eth.accounts[2],
-            "to":contract_address,
+            "to":self.contract_address,
             })
 
         return self.deploy_txn
@@ -70,7 +70,7 @@ class ModelMine():
         transact_raw = self.contract.transact(txn)
         return transact_raw
 
-    def submit_model(self,from,model):
+    def submit_model(self,from_addr,model):
         """This accepts a model from syft.nn, loads it into IPFS, and uploads
         the IPFS address to the blockchain.
 
@@ -79,10 +79,10 @@ class ModelMine():
         """
 
         ipfs_address = self.ipfs.add_pyobj(model)
-        deploy_trans = self.get_transaction(from).addModel([ipfs_address[0:32],ipfs_address[32:]])
+        deploy_trans = self.get_transaction(from_addr).addModel([ipfs_address[0:32],ipfs_address[32:]])
         return self.call.getNumModels()-1
 
-    def submit_gradient(self,from,model_id,grad):
+    def submit_gradient(self,from_addr,model_id,grad):
         """This accepts gradients for a model from syft.nn and uploads them to
         the blockchain (via IPFS), linked to a model by it's id.
 
@@ -91,7 +91,7 @@ class ModelMine():
         any python object could be uploaded (which is obviously dangerous)."""
 
         ipfs_address = self.ipfs.add_pyobj(grad)
-        deploy_trans = self.get_transaction(from).addGradient(model_id,[ipfs_address[0:32],ipfs_address[32:]])
+        deploy_trans = self.get_transaction(from_addr).addGradient(model_id,[ipfs_address[0:32],ipfs_address[32:]])
         return self.call.getNumGradientsforModel(model_id)-1
 
     def __getitem__(self,model_id):
