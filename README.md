@@ -2,6 +2,19 @@
 
 > Federated Deep Learning via Ethereum Blockchain
 
+<!-- TOC depthFrom:2 -->
+
+- [installation](#installation)
+    - [base libraries](#base-libraries)
+    - [solidity](#solidity)
+    - [ipfs](#ipfs)
+    - [pip packages](#pip-packages)
+    - [build local libraries](#build-local-libraries)
+- [usage](#usage)
+- [known issues](#known-issues)
+
+<!-- /TOC -->
+
 Sonar is a smart contract library that allows data scientists to publish new _models_ they want to get trained into the _ModelRepository_ and people to pick models they can train on their personal data.
 
 You can find a working proof of concept in the [notebooks](./notebooks) directory.
@@ -40,8 +53,6 @@ brew install ipfs
 
 After installation is complete run `ipfs init` to initialize your local IPFS system.
 
-install and run `ipfs init && ipfs daemon` (running process)
-
 ### pip packages
 
 Make sure you have a clean python3 install and continue with installing all the packages
@@ -50,7 +61,7 @@ Make sure you have a clean python3 install and continue with installing all the 
 pip install -r requirements.txt
 ```
 
-### create packages
+### build local libraries
 
 First you need to get `solar` package bundled up
 
