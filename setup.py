@@ -16,7 +16,7 @@ setup(
     description = ("A server library (inc. Smart Contracts) for Federated Deep Learning over the Ethereum Blockchain"),
     license = "Apache-2.0",
     keywords = "deep learning machine artificial intelligence homomorphic encryption",
-    packages=['sonar', 'test'],
+    packages=['sonar'],
     long_description=read('README.md'),
     classifiers=[
         "Development Status :: 1 - Alpha",
