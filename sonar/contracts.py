@@ -4,11 +4,17 @@ from solc import compile_source, compile_files, link_code
 from web3 import Web3, KeepAliveRPCProvider
 from os.path import isfile, join
 from os import listdir
+import copy
 
 class Gradient():
-    def __init__(self, owner, grad_values):
+    def __init__(self, owner, grad_values, gradient_id, new_model_error=None, new_weights=None):
         self.owner = owner
         self.grad_values = grad_values
+        self.id = gradient_id
+
+        self.new_model_error = new_model_error
+        self.new_weights = new_weights
+
 
 class Model():
 
@@ -17,18 +23,48 @@ class Model():
         self.syft_obj = syft_obj
         self.bounty = bounty
         self.initial_error = initial_error
+        self.best_error = None # TODO: get this
         self.target_error = target_error
         self.model_id = model_id
         self.repo = repo
 
     def __getitem__(self,gradient_id):
-        (grad_owner, mca) = self.repo.call.getGradient(self.model_id,gradient_id)
+        (gradient_id, grad_owner, mca, new_model_error, nwa) = self.repo.call.getGradient(self.model_id,gradient_id)
         grad_values = self.repo.ipfs.get_pyobj(str(mca[0]+mca[1]).split("\x00")[0])
-        g = Gradient(grad_owner,grad_values)
+        if(new_model_error != 0):
+            new_weights = self.repo.ipfs.get_pyobj(str(nwa[0]+nwa[1]).split("\x00")[0])
+        else:
+            new_weights = None
+            new_model_error = None
+        g = Gradient(grad_owner,grad_values,gradient_id, new_model_error, new_weights)
         return g
 
-    def generate_gradient(self,input,target):
-        return self.syft_obj.generate_gradient(input,target)
+    def __len__(self):
+        return self.repo.call.getNumGradientsforModel(self.model_id)
+
+    def submit_gradient(self, owner, input, target):
+        gradient = self.generate_gradient(owner, input, target)
+        self.repo.submit_gradient(gradient.owner, self.model_id, gradient.grad_values)
+
+    def generate_gradient(self,owner, input,target):
+        grad_values = self.syft_obj.generate_gradient(input,target)
+        gradient = Gradient(owner,grad_values,None)
+        return gradient
+
+    def evaluate_gradient(self,addr,gradient,prikey,pubkey,inputs,targets,alpha=1):
+
+        candidate = copy.deepcopy(self.syft_obj)
+        candidate.weights -= gradient.grad_values * alpha
+        candidate.decrypt(prikey)
+
+        new_model_error = candidate.evaluate(inputs,targets)
+
+        tx = self.repo.get_transaction(from_addr=addr)
+        ipfs_address = self.repo.ipfs.add_pyobj(candidate.encrypt(pubkey))
+        tx.evalGradient(gradient.id,new_model_error,[ipfs_address[0:32],ipfs_address[32:]])
+
+        return new_model_error
+
 
     def __str__(self):
         s = ""
@@ -36,19 +72,14 @@ class Model():
         s += "Owner:" + str(self.owner) + "\n"
         s += "Bounty:" + str(self.bounty) + "\n"
         s += "Initial Error:" + str(self.initial_error) + "\n"
+        s += "Best Error:" + str(self.best_error) + "\n"
         s += "Target Error:" + str(self.target_error) + "\n"
         s += "Model ID:" + str(self.model_id) + "\n"
+        s += "Num Grads:" + str(len(self)) + "\n"
         return s
 
     def __repr__(self):
-        s = ""
-        s += "Desc:" + str(self.syft_obj.desc) + "\n"
-        s += "Owner:" + str(self.owner) + "\n"
-        s += "Bounty:" + str(self.bounty) + "\n"
-        s += "Initial Error:" + str(self.initial_error) + "\n"
-        s += "Target Error:" + str(self.target_error) + "\n"
-        s += "Model ID:" + str(self.model_id) + "\n"
-        return s
+        return self.__str__()
 
 
 
