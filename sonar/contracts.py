@@ -1,6 +1,5 @@
 import textwrap,json,zlib,copy,pickle,math,codecs
 import multihash,ipfsapi
-from solc import compile_source, compile_files, link_code
 from web3 import Web3, KeepAliveRPCProvider
 from os.path import isfile, join
 from os import listdir
@@ -81,16 +80,14 @@ class Model():
     def __repr__(self):
         return self.__str__()
 
-
-
-
+        
 
 class ModelRepository():
     """This class is a python client wrapper around the ModelMine.sol contract,
     giving easy to use python functions around the contract's functionality. It
     currently assumes you're running on a local testrpc Ethereum blockchain."""
 
-    def __init__(self,account=None,deploy_txn=None,web3_port=8545,ipfs_port=5001):
+    def __init__(self,contract_address,account=None,deploy_txn=None,web3_port=8545,ipfs_port=5001):
         """Creates the base blockchain client object (web3), ipfs client object (ipfs),
         and deploys the compiled contract. Thus, it assumes that you're working with a
         local testrpc blockchain."""
@@ -106,32 +103,23 @@ class ModelRepository():
             print("No account submitted... using default[2]")
             self.account = self.web3.eth.accounts[2]
 
-        self.compile_and_deploy()
+        self.compile_and_deploy(contract_address)
 
-        print("Deployed ModelRepository:" + str(self.deploy_txn))
+        print("Connected to OpenMined ModelRepository:" + str(self.contract_address))
 
-    def compile_and_deploy(self,directory='contracts/'):
+    def compile_and_deploy(self,contract_address, directory='contracts/'):
         """This contract selects the contract associated with this python interface
         compiles it, and deploys it to a locally hosted (testrpc) blockchain."""
 
-        f = open('../contracts/ModelRepository.sol','r')
-        source = f.read()
+        f = open('/Users/amberedmundson/Laboratory/openmined/PySonar/abis/ModelRepository.abi','r')
+        abi = json.loads(f.read())
         f.close()
 
-        compiled = compile_source(source)['<stdin>:ModelRepository']
-
         self.contract = self.web3.eth.contract(
-            abi = compiled['abi'],
-            bytecode = compiled['bin'],
-            bytecode_runtime = compiled['bin-runtime'],
-            source = source,
+            abi = abi,
             )
 
-        if(self.deploy_txn is None):
-            self.deploy_txn = self.contract.deploy({'from': self.account})
-
-        txn_receipt = self.web3.eth.getTransactionReceipt(self.deploy_txn)
-        self.contract_address = txn_receipt['contractAddress']
+        self.contract_address = contract_address
 
         self.call = self.contract.call({
             "from":self.web3.eth.accounts[2],

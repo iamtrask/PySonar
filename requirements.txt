@@ -3,5 +3,4 @@ numpy
 phe
 multihash
 ipfsapi
-py-solc
 web3
