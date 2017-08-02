@@ -1,6 +1,6 @@
-# sonar
+# PySonar
 
-> Federated Deep Learning via Ethereum Blockchain
+> Federated Deep Learning Client via Sonar Smart Contract on the Ethereum Blockchain
 
 <!-- TOC depthFrom:2 -->
 
