@@ -111,7 +111,7 @@ class ModelRepository():
         """This contract selects the contract associated with this python interface
         compiles it, and deploys it to a locally hosted (testrpc) blockchain."""
 
-        f = open('/Users/amberedmundson/Laboratory/openmined/PySonar/abis/ModelRepository.abi','r')
+        f = open('../abis/ModelRepository.abi','r')
         abi = json.loads(f.read())
         f.close()
 
