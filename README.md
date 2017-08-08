@@ -63,7 +63,7 @@ pip install -r requirements.txt
 
 ### build local libraries
 
-First you need to get `solar` package bundled up
+First you need to get `sonar` package bundled up
 
 ```sh
 python setup.py install
