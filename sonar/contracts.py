@@ -87,15 +87,15 @@ class ModelRepository():
     giving easy to use python functions around the contract's functionality. It
     currently assumes you're running on a local testrpc Ethereum blockchain."""
 
-    def __init__(self,contract_address,account=None,deploy_txn=None,web3_port=8545,ipfs_port=5001):
+    def __init__(self,contract_address,account=None,deploy_txn=None, ipfs_host='127.0.0.1', web3_host='localhost', web3_port=8545,ipfs_port=5001):
         """Creates the base blockchain client object (web3), ipfs client object (ipfs),
         and deploys the compiled contract. Thus, it assumes that you're working with a
         local testrpc blockchain."""
 
 
         self.deploy_txn = deploy_txn
-        self.web3 = Web3(KeepAliveRPCProvider(host='localhost', port=str(web3_port)))
-        self.ipfs = ipfsapi.connect('127.0.0.1', int(ipfs_port))
+        self.web3 = Web3(KeepAliveRPCProvider(host=web3_host, port=str(web3_port)))
+        self.ipfs = ipfsapi.connect(ipfs_host, int(ipfs_port))
 
         if(account is not None):
             self.account = account
