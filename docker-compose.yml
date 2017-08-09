@@ -2,7 +2,7 @@ version: '2'
 services:
   testrpc:
     image: "openmined/testrpc:latest"
-    command: ["-a", "1000"]
+    command: ["-a", "1000", "-i", "25189"]
   ipfs:
     image: "ipfs/go-ipfs:latest"
     links:
@@ -11,7 +11,7 @@ services:
     image: "openmined/sonar:latest"
     links:
       - testrpc
-    command: /bin/sh -c "sleep 10 && truffle migrate --network development"
+    command: /bin/sh -c "sleep 10 && truffle migrate --network docker"
   pysonar-notebooks:
     build:
       context: .
