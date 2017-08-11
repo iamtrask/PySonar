@@ -19,6 +19,17 @@ Sonar is a smart contract library that allows data scientists to publish new _mo
 
 You can find a working proof of concept in the [notebooks](./notebooks) directory.
 
+## Running with Docker
+
+Using Docker is the easiest way to get this running.
+
+1. Install Docker from https://www.docker.com/
+    - For macOS users with [Homebrew](https://brew.sh/) installed, use `brew cask install docker`
+2. Run `docker-compose up`
+3. Look for the Jupyter notebook URL, it should look like `http://0.0.0.0:8888/?token=<long token here>` - open that URL in your web browser
+4. When running the notebooks, search the verbose output of the `docker-compose up` command for the `eth_getCode` -> `ModelRepository` address and copy into the last line of the cell under "Setting up the Experiment" as explained in the "ATTENTION" comment 🙂
+5. Step through the notebook
+
 ## installation
 
 Before running the demo there are a couple of prerequisites you need to install.
