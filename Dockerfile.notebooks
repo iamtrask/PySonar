@@ -1,4 +1,4 @@
-FROM openmined/syft:latest AS syft
+FROM openmined/pysyft:latest AS syft
 
 FROM openmined/pysonar:latest
 RUN ["pip3", "install", "jupyter", "notebook"]

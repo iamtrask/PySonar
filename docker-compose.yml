@@ -1,7 +1,7 @@
 version: '2'
 services:
   testrpc:
-    image: "openmined/testrpc:latest"
+    image: "harshjv/testrpc:latest"
     command: ["-a", "1000", "-i", "25189"]
   ipfs:
     image: "ipfs/go-ipfs:latest"
