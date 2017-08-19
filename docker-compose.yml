@@ -1,17 +1,24 @@
 version: '2'
 services:
   testrpc:
-    image: "harshjv/testrpc:latest"
-    command: ["-a", "1000", "-i", "25189"]
+    # image: "harshjv/testrpc:latest"
+    build:
+      context: ../Sonar
+      dockerfile: Dockerfile.testrpc
+    # command: ["-a", "1000", "-i", "25189"]
   ipfs:
     image: "ipfs/go-ipfs:latest"
     links:
       - testrpc
-  sonar:
-    image: "openmined/sonar:latest"
-    links:
-      - testrpc
-    command: /bin/sh -c "sleep 10 && truffle migrate --network docker"
+  # sonar:
+  #   build:
+  #     context: ../Sonar
+  #     dockerfile: Dockerfile.testrpc
+
+    # image: "openmined/sonar:latest"
+  #   links:
+  #     - testrpc
+    # command: /bin/sh -c "sleep 10 && truffle migrate --network docker"
   pysonar-notebooks:
     build:
       context: .
