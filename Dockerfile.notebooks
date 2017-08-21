@@ -5,6 +5,7 @@ RUN ["pip3", "install", "jupyter", "notebook"]
 RUN ["mkdir", "/notebooks"]
 COPY --from=syft /usr/lib/python3.6/site-packages/syft-*.egg /usr/lib/python3.6/site-packages
 COPY abis /abis
+COPY notebooks /notebooks
 WORKDIR /notebooks
 EXPOSE 8888
 CMD ["jupyter", "notebook", "--ip=0.0.0.0", "--allow-root"]
