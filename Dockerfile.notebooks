@@ -6,6 +6,7 @@ RUN ["mkdir", "/notebooks"]
 COPY --from=syft /usr/lib/python3.6/site-packages/syft-*.egg /usr/lib/python3.6/site-packages
 COPY abis /abis
 COPY notebooks /notebooks
+COPY jupyter_notebook_config.py /notebooks/
 WORKDIR /notebooks
 EXPOSE 8888
-CMD ["jupyter", "notebook", "--ip=0.0.0.0", "--allow-root"]
+CMD ["jupyter", "notebook", "--config=./jupyter_notebook_config.py", "--allow-root"]
