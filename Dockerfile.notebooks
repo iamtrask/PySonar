@@ -1,6 +1,6 @@
-FROM openmined/pysyft:latest AS syft
+FROM openmined/pysyft:edge AS syft
 
-FROM openmined/pysonar:latest
+FROM openmined/pysonar:edge
 RUN ["pip3", "install", "jupyter", "notebook"]
 RUN ["mkdir", "/notebooks"]
 COPY --from=syft /usr/lib/python3.6/site-packages/syft-*.egg /usr/lib/python3.6/site-packages
