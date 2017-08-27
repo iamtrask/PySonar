@@ -1,9 +1,18 @@
-FROM openmined/pysyft:latest AS syft
+FROM openmined/pysyft:edge
+RUN ["apk", "add", "--no-cache", "python3", "python3-dev", "musl-dev", "linux-headers", "g++", "lapack-dev", "gfortran", "gmp-dev", "mpfr-dev", "mpc1-dev"]
 
-FROM openmined/pysonar:latest
+RUN ["mkdir", "/pysonar"]
+COPY requirements.txt /pysonar
+RUN ["pip3", "install", "numpy"]
+RUN ["pip3", "install", "scipy"]
+RUN ["pip3", "install", "-r", "/pysonar/requirements.txt"]
+
+COPY . /pysonar
+WORKDIR /pysonar
+RUN ["python3", "setup.py", "install"]
+
 RUN ["pip3", "install", "jupyter", "notebook"]
 RUN ["mkdir", "/notebooks"]
-COPY --from=syft /usr/lib/python3.6/site-packages/syft-*.egg /usr/lib/python3.6/site-packages
 COPY abis /abis
 COPY notebooks /notebooks
 COPY jupyter_notebook_config.py /notebooks/
