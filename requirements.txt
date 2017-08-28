@@ -4,3 +4,5 @@ phe
 multihash
 ipfsapi
 web3
+pytest-flake8
+pytest

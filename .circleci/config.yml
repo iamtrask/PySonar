@@ -1,0 +1,27 @@
+
+version: 2
+jobs:
+  build:
+    working_directory: /PySonar
+    docker:
+      - image: docker:latest
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Build application Docker image
+          command: |
+            docker build -t pysonar .
+      - run:
+          name: Run tests
+          command: |
+            docker run --rm pysonar pytest
+            docker run --rm pysonar pytest --flake8
+      - deploy:
+          name: Push application Docker image
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              docker login -u "${DOCKERHUB_USER}" -p "${DOCKERHUB_PASS}"
+              docker tag pysonar "${DOCKERHUB_REPO}:latest"
+              docker push "${DOCKERHUB_REPO}:latest"
+            fi
