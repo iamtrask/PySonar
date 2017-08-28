@@ -15,7 +15,6 @@ jobs:
       - run:
           name: Run tests
           command: |
-            docker run --rm pysonar pytest
             docker run --rm pysonar pytest --flake8
       - deploy:
           name: Push application Docker image
