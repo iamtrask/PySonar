@@ -1,5 +1,6 @@
 # PySonar
 
+[![CircleCI](https://circleci.com/gh/OpenMined/PySonar.svg?style=svg)](https://circleci.com/gh/OpenMined/PySonar)
 > Federated Deep Learning Client via Sonar Smart Contract on the Ethereum Blockchain
 
 <!-- TOC depthFrom:2 -->
@@ -56,7 +57,7 @@ See [installing solidity](http://solidity.readthedocs.io/en/develop/installing-s
 ### ipfs
 
 As the network itself is too big to actually host it on the blockchain you need `IPFS` to host the files.
-For installation see the [ipfs installation page](https://dist.ipfs.io/#go-ipfs) or run 
+For installation see the [ipfs installation page](https://dist.ipfs.io/#go-ipfs) or run
 
 ```sh
 brew install ipfs
