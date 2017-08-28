@@ -2,6 +2,8 @@
 
 > Federated Deep Learning Client via Sonar Smart Contract on the Ethereum Blockchain
 
+[![Build Status](https://travis-ci.org/OpenMined/PySonar.svg?branch=master)](https://travis-ci.org/OpenMined/PySonar)
+
 <!-- TOC depthFrom:2 -->
 
 - [installation](#installation)
