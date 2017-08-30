@@ -2,40 +2,25 @@
 version: 2
 jobs:
   build:
-    working_directory: ~/repo
+    working_directory: /PySonar
     docker:
-      - image: circleci/python:3.6.1
+      - image: docker:latest
     steps:
       - checkout
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-          - v1-dependencies-{{ checksum "requirements.txt" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
+      - setup_remote_docker
       - run:
-          name: Install dependencies
+          name: Build application Docker image
           command: |
-            python3 -m venv venv
-            . venv/bin/activate
-            pip3 install -r requirements.txt
-      - save_cache:
-          paths:
-            - ./venv
-          key: v1-dependencies-{{ checksum "requirements.txt" }}
-
+            docker build -t pysonar .
       - run:
           name: Run tests
           command: |
-            . venv/bin/activate
-            pytest --flake8
-
+            docker run --rm pysonar pytest --flake8
       - deploy:
           name: Push application Docker image
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
               docker login -u "${DOCKERHUB_USER}" -p "${DOCKERHUB_PASS}"
-              docker build -t pysonar .
               docker tag pysonar "${DOCKERHUB_REPO}:latest"
               docker push "${DOCKERHUB_REPO}:latest"
             fi
