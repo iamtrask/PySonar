@@ -4,14 +4,14 @@
 
 <!-- TOC depthFrom:2 -->
 
-- [installation](#installation)
-    - [base libraries](#base-libraries)
-    - [solidity](#solidity)
-    - [ipfs](#ipfs)
-    - [pip packages](#pip-packages)
-    - [build local libraries](#build-local-libraries)
-- [usage](#usage)
-- [known issues](#known-issues)
+- [Setup](#setup)
+    - [Prerequisites](#prerequisites)
+    - [Installation](#installation)
+- [Usage](#usage)
+    - [Bootstrap environment](#bootstrap-environment)
+    - [Start](#start)
+    - [Know issues](#know-issues)
+- [License](#license)
 
 <!-- /TOC -->
 
@@ -19,24 +19,31 @@ Sonar is a smart contract library that allows data scientists to publish new _mo
 
 You can find a working proof of concept in the [notebooks](./notebooks) directory.
 
-## Running with Docker
+## Setup
+
+### Prerequisites
 
 Using Docker is the easiest way to get this running.
 
-1. Install Docker from https://www.docker.com/
-    - For macOS users: https://docs.docker.com/docker-for-mac/
-2. Run `docker-compose up`
-3. Look for the Jupyter notebook URL, it should look like `http://0.0.0.0:8888/?token=<long token here>` - open that URL in your web browser
-4. When running the notebooks, search the verbose output of the `docker-compose up` command for the `eth_getCode` -> `ModelRepository` address and copy into the last line of the cell under "Setting up the Experiment" as explained in the "ATTENTION" comment 🙂
-5. Step through the notebook
+* Install Docker from [its website](https://www.docker.com/)
+* For macOS users install from [here](https://docs.docker.com/docker-for-mac/)
 
-## installation
+### Installation
+
+1. Run `docker-compose up`
+2. Look for the Jupyter notebook URL, it should look like `http://0.0.0.0:8888/?token=<long token here>` - open that URL in your web browser
+3. When running the notebooks, search the verbose output of the `docker-compose up` command for the `eth_getCode` -> `ModelRepository` address and copy into the last line of the cell under "Setting up the Experiment" as explained in the "ATTENTION" comment 🙂
+4. Step through the notebook
+
+## Usage
+
+### Bootstrap environment
 
 Before running the demo there are a couple of prerequisites you need to install.
 
-### base libraries
+#### Base libraries
 
-Before installing the python packages you need to make sure your system holds a set of basic math libraries required for the encryption operations (`phe` lib):
+Before installing the python packages you need to make sure your system holds a set of basic math libraries required for the encryption operations (`phe` lib)
 
 * [mpc](https://www.musicpd.org/clients/mpc/): Command-line music player client for mpd
 * [mpfr](http://www.mpfr.org/): multiple-precision floating-point computations
@@ -48,15 +55,15 @@ For MacOS with brew just run:
 brew install libmpc mpfr gmp
 ```
 
-### solidity
+#### Solidity
 
 The solidity tools are required to compile the contract of our demo.
 See [installing solidity](http://solidity.readthedocs.io/en/develop/installing-solidity.html) for instructions for your platform.
 
-### ipfs
+#### IPFS
 
 As the network itself is too big to actually host it on the blockchain you need `IPFS` to host the files.
-For installation see the [ipfs installation page](https://dist.ipfs.io/#go-ipfs) or run 
+For installation see the [ipfs installation page](https://dist.ipfs.io/#go-ipfs) or run:
 
 ```sh
 brew install ipfs
@@ -64,7 +71,7 @@ brew install ipfs
 
 After installation is complete run `ipfs init` to initialize your local IPFS system.
 
-### pip packages
+#### PIP packages
 
 Make sure you have a clean python3 install and continue with installing all the packages
 
@@ -72,7 +79,7 @@ Make sure you have a clean python3 install and continue with installing all the 
 pip install -r requirements.txt
 ```
 
-### build local libraries
+#### Build local libraries
 
 First you need to get `sonar` package bundled up
 
@@ -82,7 +89,7 @@ python setup.py install
 
 Then make sure you also have the [`syft`](https://github.com/OpenMined/syft) package properly installed. Head over to the repository and follow its instructions.
 
-## usage
+### Start
 
 After you made sure all the installation steps are done you need to set up your local mock environment.
 
@@ -99,8 +106,12 @@ Now open a second shell, start the notebook and follow its instructions
 jupyter notebook notebooks
 ```
 
-## known issues
+### Known issues
 
 * there have been reports of the `brew` installation of solidity not working properly
 
 If you experience any problems while running this demo please create a [github issue](https://github.com/OpenMined/sonar/issues) and help us get better.
+
+## License
+
+[Apache-2.0](https://github.com/OpenMined/PySonar/blob/master/LICENSE) by OpenMined contributors
