@@ -3,6 +3,7 @@ import pkgutil
 
 ignore_packages = set(['test'])
 
+
 def import_submodules(package, recursive=True):
     """ Import all submodules of a module, recursively, including subpackages
 
@@ -22,4 +23,6 @@ def import_submodules(package, recursive=True):
     return results
 
 # import submodules recursively
+
+
 import_submodules(__name__)
