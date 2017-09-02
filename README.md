@@ -6,12 +6,14 @@
 
 <!-- TOC depthFrom:2 -->
 
+- [Running with Docker](#running-with-docker)
 - [installation](#installation)
     - [base libraries](#base-libraries)
     - [solidity](#solidity)
     - [ipfs](#ipfs)
     - [pip packages](#pip-packages)
     - [build local libraries](#build-local-libraries)
+    - [smart contract abi](#smart-contract-abi)
 - [usage](#usage)
 - [known issues](#known-issues)
 
@@ -83,6 +85,16 @@ python setup.py install
 ```
 
 Then make sure you also have the [`syft`](https://github.com/OpenMined/syft) package properly installed. Head over to the repository and follow its instructions.
+
+### smart contract abi
+
+The interface for our `Sonar` smart contract is distributed via an npm package. You can import the `ModelRepository.abi` file to your local environment by running
+
+```sh
+make import-abi
+```
+
+which will place the file at `abis/ModelRepository.abi`.
 
 ## usage
 
