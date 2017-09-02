@@ -168,11 +168,11 @@ class ModelRepository():
         TODO: modify syft.nn to actually have a "getGradients()" method call so
         that there can be checks that keep people from uploading junk.
         Currently any python object could be uploaded (which is obviously
-        dangerous).
+        dangerous)."""
 
         ipfs_address = self.ipfs.add_pyobj(grad)
-        deploy_trans = self.get_transaction(from_addr).addGradient(model_id,
-        [ipfs_address[0:32],ipfs_address[32:]])"""
+        self.get_transaction(from_addr).addGradient(model_id,
+        [ipfs_address[0:32],ipfs_address[32:]])
         return self.call.getNumGradientsforModel(model_id) - 1
 
     def __getitem__(self, model_id):

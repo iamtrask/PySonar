@@ -1,5 +1,5 @@
 {
     "dependencies": {
-        "@openmined/sonar": "git+https://git@github.com/OpenMined/Sonar.git#42023d71f64b2ed30fa68b46575c02105b34ef9c"
+        "@openmined/sonar": "git+https://git@github.com/OpenMined/Sonar.git#f687278"
     }
 }
