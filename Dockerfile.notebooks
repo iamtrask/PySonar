@@ -19,10 +19,9 @@ COPY notebooks /notebooks
 COPY jupyter_notebook_config.py /notebooks/
 
 # import abi via NPM module
-RUN apk add --update nodejs nodejs-npm && \
+RUN apk add --update nodejs nodejs-npm git && \
     make import-abi && \
     cp -r /pysonar/abis /abis
-
 
 WORKDIR /notebooks
 EXPOSE 8888
