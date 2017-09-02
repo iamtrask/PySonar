@@ -31,10 +31,10 @@ class Model():
         (gradient_id, grad_owner, mca, new_model_error,
          nwa) = self.repo.call.getGradient(self.model_id, gradient_id)
         grad_values = \
-            self.repo.ipfs.get_pyobj(str(mca[0] + mca[1]).split("\x00")[0])
+            self.repo.ipfs.get_pyobj(IPFSAddress().from_ethereum(mca))
         if(new_model_error != 0):
             new_weights = \
-                self.repo.ipfs.get_pyobj(str(nwa[0] + nwa[1]).split("\x00")[0])
+                self.repo.ipfs.get_pyobj(IPFSAddress().from_ethereum(nwa))
         else:
             new_weights = None
             new_model_error = None
@@ -66,8 +66,8 @@ class Model():
 
         tx = self.repo.get_transaction(from_addr=addr)
         ipfs_address = self.repo.ipfs.add_pyobj(candidate.encrypt(pubkey))
-        tx.evalGradient(gradient.id, new_model_error, [ipfs_address[0:32],
-                        ipfs_address[32:]])
+        tx.evalGradient(gradient.id, new_model_error,
+                        IPFSAddress().to_ethereum(ipfs_address))
 
         return new_model_error
 
@@ -181,7 +181,7 @@ class ModelRepository():
             (owner, bounty, initial_error, target_error, mca) = \
                 self.call.getModel(model_id)
             syft_obj = \
-                self.ipfs.get_pyobj(str(mca[0] + mca[1]).split("\x00")[0])
+                self.ipfs.get_pyobj(IPFSAddress().from_ethereum(mca))
             model = Model(owner, syft_obj, self.web3.fromWei(bounty, 'ether'),
                           initial_error, target_error, model_id, self)
 
@@ -189,3 +189,12 @@ class ModelRepository():
 
     def __len__(self):
         return self.call.getNumModels()
+
+
+class IPFSAddress:
+    def from_ethereum(self, two_bytes32_representation):
+        return str(two_bytes32_representation[0] +
+                   two_bytes32_representation[1]).split("\x00")[0]
+
+    def to_ethereum(self, ipfs_hash):
+        return [ipfs_hash[0:32], ipfs_hash[32:]]
