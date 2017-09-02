@@ -5,3 +5,5 @@ sonar.egg-info/
 .ipynb_checkpoints/
 pytest_runner*
 /.cache
+node_modules/
+abis/*.abi

@@ -1,0 +1,5 @@
+{
+    "dependencies": {
+        "@openmined/sonar": "git+https://git@github.com/OpenMined/Sonar.git#08ca9db"
+    }
+}
