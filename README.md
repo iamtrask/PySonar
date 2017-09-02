@@ -2,6 +2,7 @@
 
 > Federated Deep Learning Client via Sonar Smart Contract on the Ethereum Blockchain
 
+[![Chat on Slack](https://img.shields.io/badge/chat-on%20slack-7A5979.svg)](https://openmined.slack.com/messages/team_pysonar)
 [![Build Status](https://travis-ci.org/OpenMined/PySonar.svg?branch=master)](https://travis-ci.org/OpenMined/PySonar)
 
 <!-- TOC depthFrom:2 -->
