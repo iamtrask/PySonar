@@ -3,3 +3,5 @@ dist/
 sonar.egg-info/
 */**/__pycache__
 .ipynb_checkpoints/
+pytest_runner*
+/.cache
