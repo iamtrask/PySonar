@@ -143,7 +143,7 @@ class ModelRepository():
         txn["from"] = from_addr
         txn["to"] = self.contract_address
 
-        if(value is not None):
+        if value is not None:
             txn["value"] = int(value)
 
         transact_raw = self.contract.transact(txn)
@@ -155,10 +155,9 @@ class ModelRepository():
 
         TODO: use best practices for storing IPFS addresses on the blockchain."""
         ipfs_address = self.ipfs.add_pyobj(model.syft_obj)
-        deploy_trans = self.get_transaction(model.owner,
-        self.web3.toWei(model.bounty,'ether'))
-        .addModel([ipfs_address[0:32], ipfs_address[32:]], model.initial_error,
-        model.target_error)
+        deploy_tx = self.get_transaction(model.owner, value=self.web3.toWei(model.bounty, 'ether'))
+        deploy_tx.addModel([ipfs_address[0:32], ipfs_address[32:]],
+                           model.initial_error, model.target_error)
         return self.call.getNumModels() - 1
 
     def submit_gradient(self, from_addr, model_id, grad):
@@ -172,7 +171,7 @@ class ModelRepository():
 
         ipfs_address = self.ipfs.add_pyobj(grad)
         self.get_transaction(from_addr).addGradient(model_id,
-        [ipfs_address[0:32],ipfs_address[32:]])
+                                                    [ipfs_address[0:32], ipfs_address[32:]])
         return self.call.getNumGradientsforModel(model_id) - 1
 
     def __getitem__(self, model_id):
