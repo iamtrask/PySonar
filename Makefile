@@ -1,7 +1,7 @@
 .PHONY: test import-abi
 
 test:
-	pytest
+	pytest --flake8
 
 import-abi:
 	npm install && \
