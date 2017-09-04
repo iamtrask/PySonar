@@ -92,6 +92,16 @@ python setup.py install
 
 Then make sure you also have the [`syft`](https://github.com/OpenMined/syft) package properly installed. Head over to the repository and follow its instructions.
 
+#### Import Smart Contract ABI
+
+The interface for our `Sonar` smart contract is distributed via an npm package. You can import the `ModelRepository.abi` file to your local environment by running
+
+```sh
+make import-abi
+```
+
+which will place the file at `abis/ModelRepository.abi`.
+
 ### Start
 
 After you made sure all the installation steps are done you need to set up your local mock environment.

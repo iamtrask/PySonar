@@ -143,7 +143,7 @@ class ModelRepository():
         txn["from"] = from_addr
         txn["to"] = self.contract_address
 
-        if(value is not None):
+        if value is not None:
             txn["value"] = int(value)
 
         transact_raw = self.contract.transact(txn)
@@ -153,12 +153,13 @@ class ModelRepository():
         """This accepts a model from syft.nn, loads it into IPFS, and uploads
         the IPFS address to the blockchain.
 
-        TODO: use best practices for storing IPFS addresses on the blockchain.
+        TODO: better way to storing IPFS addresses on the blockchain."""
         ipfs_address = self.ipfs.add_pyobj(model.syft_obj)
-        deploy_trans = self.get_transaction(model.owner,
-        value=self.web3.toWei(model.bounty,'ether'))
-        .addModel([ipfs_address[0:32], ipfs_address[32:]], model.initial_error,
-        model.target_error)"""
+        deploy_tx = self.get_transaction(
+            model.owner,
+            value=self.web3.toWei(model.bounty, 'ether'))
+        deploy_tx.addModel([ipfs_address[0:32], ipfs_address[32:]],
+                           model.initial_error, model.target_error)
         return self.call.getNumModels() - 1
 
     def submit_gradient(self, from_addr, model_id, grad):
@@ -168,11 +169,12 @@ class ModelRepository():
         TODO: modify syft.nn to actually have a "getGradients()" method call so
         that there can be checks that keep people from uploading junk.
         Currently any python object could be uploaded (which is obviously
-        dangerous).
+        dangerous)."""
 
         ipfs_address = self.ipfs.add_pyobj(grad)
-        deploy_trans = self.get_transaction(from_addr).addGradient(model_id,
-        [ipfs_address[0:32],ipfs_address[32:]])"""
+        self.get_transaction(from_addr).addGradient(
+            model_id,
+            [ipfs_address[0:32], ipfs_address[32:]])
         return self.call.getNumGradientsforModel(model_id) - 1
 
     def __getitem__(self, model_id):
