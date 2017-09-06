@@ -88,7 +88,7 @@ class Model():
 
 
 class ModelRepository():
-    """This class is a python client wrapper around the ModelMine.sol contract,
+    """This class is a python client wrapper around the Sonar contract,
     giving easy to use python functions around the contract's functionality. It
     currently assumes you're running on a local testrpc Ethereum blockchain."""
 
@@ -153,7 +153,8 @@ class ModelRepository():
         """This accepts a model from syft.nn, loads it into IPFS, and uploads
         the IPFS address to the blockchain.
 
-        TODO: better way to storing IPFS addresses on the blockchain."""
+        TODO: better way to storing IPFS addresses on the blockchain.
+        See https://github.com/OpenMined/Sonar/issues/19"""
         ipfs_address = self.ipfs.add_pyobj(model.syft_obj)
         deploy_tx = self.get_transaction(
             model.owner,
