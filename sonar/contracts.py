@@ -115,7 +115,7 @@ class ModelRepository():
         print("Connected to OpenMined ModelRepository:" +
               str(self.contract_address))
 
-    def compile_and_deploy(self, contract_address, directory='contracts/'):
+    def compile_and_deploy(self, contract_address):
         """This contract selects the contract associated with this python
         interface compiles it, and deploys it to a locally hosted (testrpc)
         blockchain."""
@@ -132,8 +132,6 @@ class ModelRepository():
             "from": self.web3.eth.accounts[2],
             "to": self.contract_address,
         })
-
-        return self.deploy_txn
 
     def get_transaction(self, from_addr, value=None):
         """I consistently forget the conventions for executing transactions against
