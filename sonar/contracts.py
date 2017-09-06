@@ -158,7 +158,7 @@ class ModelRepository():
         deploy_tx = self.get_transaction(
             model.owner,
             value=self.web3.toWei(model.bounty, 'ether'))
-        deploy_tx.addModel([ipfs_address[0:32], ipfs_address[32:]],
+        deploy_tx.addModel(IPFSAddress().to_ethereum(ipfs_address),
                            model.initial_error, model.target_error)
         return self.call.getNumModels() - 1
 
@@ -173,8 +173,7 @@ class ModelRepository():
 
         ipfs_address = self.ipfs.add_pyobj(grad)
         self.get_transaction(from_addr).addGradient(
-            model_id,
-            [ipfs_address[0:32], ipfs_address[32:]])
+            model_id, IPFSAddress().to_ethereum(ipfs_address))
         return self.call.getNumGradientsforModel(model_id) - 1
 
     def __getitem__(self, model_id):
