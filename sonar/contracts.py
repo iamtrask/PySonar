@@ -92,14 +92,13 @@ class ModelRepository():
     giving easy to use python functions around the contract's functionality. It
     currently assumes you're running on a local testrpc Ethereum blockchain."""
 
-    def __init__(self, contract_address, account=None, deploy_txn=None,
+    def __init__(self, contract_address, account=None,
                  ipfs_host='127.0.0.1', web3_host='localhost', web3_port=8545,
                  ipfs_port=5001):
         """Creates the base blockchain client object (web3), ipfs client object
-        (ipfs), and deploys the compiled contract. Thus, it assumes that you're
-        working with a local testrpc blockchain."""
+         and connects to the Sonar contract.
+        It assumes you're working with a local testrpc blockchain."""
 
-        self.deploy_txn = deploy_txn
         self.web3 = Web3(KeepAliveRPCProvider(host=web3_host,
                                               port=str(web3_port)))
         self.ipfs = ipfsapi.connect(ipfs_host, int(ipfs_port))
@@ -110,15 +109,10 @@ class ModelRepository():
             print("No account submitted... using default[2]")
             self.account = self.web3.eth.accounts[2]
 
-        self.compile_and_deploy(contract_address)
+        self.connect_to_contract(contract_address)
 
-        print("Connected to OpenMined ModelRepository:" +
-              str(self.contract_address))
-
-    def compile_and_deploy(self, contract_address):
-        """This contract selects the contract associated with this python
-        interface compiles it, and deploys it to a locally hosted (testrpc)
-        blockchain."""
+    def connect_to_contract(self, contract_address):
+        """Connects to the Sonar contract using its address and ABI"""
 
         f = open('../abis/ModelRepository.abi', 'r')
         abi = json.loads(f.read())
@@ -132,6 +126,8 @@ class ModelRepository():
             "from": self.web3.eth.accounts[2],
             "to": self.contract_address,
         })
+        print("Connected to OpenMined ModelRepository:" +
+              str(self.contract_address))
 
     def get_transaction(self, from_addr, value=None):
         """I consistently forget the conventions for executing transactions against
