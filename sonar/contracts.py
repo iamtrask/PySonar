@@ -88,18 +88,17 @@ class Model():
 
 
 class ModelRepository():
-    """This class is a python client wrapper around the ModelMine.sol contract,
+    """This class is a python client wrapper around the Sonar contract,
     giving easy to use python functions around the contract's functionality. It
     currently assumes you're running on a local testrpc Ethereum blockchain."""
 
-    def __init__(self, contract_address, account=None, deploy_txn=None,
+    def __init__(self, contract_address, account=None,
                  ipfs_host='127.0.0.1', web3_host='localhost', web3_port=8545,
                  ipfs_port=5001):
         """Creates the base blockchain client object (web3), ipfs client object
-        (ipfs), and deploys the compiled contract. Thus, it assumes that you're
-        working with a local testrpc blockchain."""
+         and connects to the Sonar contract.
+        It assumes you're working with a local testrpc blockchain."""
 
-        self.deploy_txn = deploy_txn
         self.web3 = Web3(KeepAliveRPCProvider(host=web3_host,
                                               port=str(web3_port)))
         self.ipfs = ipfsapi.connect(ipfs_host, int(ipfs_port))
@@ -110,15 +109,10 @@ class ModelRepository():
             print("No account submitted... using default[2]")
             self.account = self.web3.eth.accounts[2]
 
-        self.compile_and_deploy(contract_address)
+        self.connect_to_contract(contract_address)
 
-        print("Connected to OpenMined ModelRepository:" +
-              str(self.contract_address))
-
-    def compile_and_deploy(self, contract_address, directory='contracts/'):
-        """This contract selects the contract associated with this python
-        interface compiles it, and deploys it to a locally hosted (testrpc)
-        blockchain."""
+    def connect_to_contract(self, contract_address):
+        """Connects to the Sonar contract using its address and ABI"""
 
         f = open('../abis/ModelRepository.abi', 'r')
         abi = json.loads(f.read())
@@ -132,8 +126,8 @@ class ModelRepository():
             "from": self.web3.eth.accounts[2],
             "to": self.contract_address,
         })
-
-        return self.deploy_txn
+        print("Connected to OpenMined ModelRepository:" +
+              str(self.contract_address))
 
     def get_transaction(self, from_addr, value=None):
         """I consistently forget the conventions for executing transactions against
@@ -153,12 +147,13 @@ class ModelRepository():
         """This accepts a model from syft.nn, loads it into IPFS, and uploads
         the IPFS address to the blockchain.
 
-        TODO: better way to storing IPFS addresses on the blockchain."""
+        TODO: better way to storing IPFS addresses on the blockchain.
+        See https://github.com/OpenMined/Sonar/issues/19"""
         ipfs_address = self.ipfs.add_pyobj(model.syft_obj)
         deploy_tx = self.get_transaction(
             model.owner,
             value=self.web3.toWei(model.bounty, 'ether'))
-        deploy_tx.addModel([ipfs_address[0:32], ipfs_address[32:]],
+        deploy_tx.addModel(IPFSAddress().to_ethereum(ipfs_address),
                            model.initial_error, model.target_error)
         return self.call.getNumModels() - 1
 
@@ -173,8 +168,7 @@ class ModelRepository():
 
         ipfs_address = self.ipfs.add_pyobj(grad)
         self.get_transaction(from_addr).addGradient(
-            model_id,
-            [ipfs_address[0:32], ipfs_address[32:]])
+            model_id, IPFSAddress().to_ethereum(ipfs_address))
         return self.call.getNumGradientsforModel(model_id) - 1
 
     def __getitem__(self, model_id):
