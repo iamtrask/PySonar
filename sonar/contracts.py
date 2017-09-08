@@ -93,7 +93,8 @@ class ModelRepository():
     giving easy to use python functions around the contract's functionality. It
     currently assumes you're running on a local testrpc Ethereum blockchain."""
 
-    def __init__(self, contract_address, account=None, ipfs=IPFS('127.0.0.1', 5001),
+    def __init__(self, contract_address, account=None,
+                 ipfs=IPFS('127.0.0.1', 5001),
                  web3_host='localhost', web3_port=8545):
         """Creates the base blockchain client object (web3) then
          connects to the Sonar contract.
@@ -189,8 +190,8 @@ class ModelRepository():
 
 class IPFSAddress:
     def from_ethereum(self, two_bytes32_representation):
-        return str(two_bytes32_representation[0] +
-                   two_bytes32_representation[1]).split("\x00")[0]
+        return bytearray.fromhex("".join(two_bytes32_representation)
+                                 .replace("0x", "")).decode().replace("0", "")
 
     def to_ethereum(self, ipfs_hash):
         return [ipfs_hash[0:32], ipfs_hash[32:]]
