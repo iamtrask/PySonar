@@ -1,7 +1,8 @@
 import json
 import copy
-import ipfsapi
 from web3 import Web3, KeepAliveRPCProvider
+
+from sonar.ipfs import IPFS
 
 
 class Gradient():
@@ -92,18 +93,17 @@ class ModelRepository():
     giving easy to use python functions around the contract's functionality. It
     currently assumes you're running on a local testrpc Ethereum blockchain."""
 
-    def __init__(self, contract_address, account=None,
-                 ipfs_host='127.0.0.1', web3_host='localhost', web3_port=8545,
-                 ipfs_port=5001):
-        """Creates the base blockchain client object (web3), ipfs client object
-         and connects to the Sonar contract.
+    def __init__(self, contract_address, account=None, ipfs=IPFS('127.0.0.1', 5001),
+                 web3_host='localhost', web3_port=8545):
+        """Creates the base blockchain client object (web3) then
+         connects to the Sonar contract.
         It assumes you're working with a local testrpc blockchain."""
 
+        self.ipfs = ipfs
         self.web3 = Web3(KeepAliveRPCProvider(host=web3_host,
                                               port=str(web3_port)))
-        self.ipfs = ipfsapi.connect(ipfs_host, int(ipfs_port))
 
-        if(account is not None):
+        if account is not None:
             self.account = account
         else:
             print("No account submitted... using default[2]")
@@ -149,7 +149,7 @@ class ModelRepository():
 
         TODO: better way to storing IPFS addresses on the blockchain.
         See https://github.com/OpenMined/Sonar/issues/19"""
-        ipfs_address = self.ipfs.add_pyobj(model.syft_obj)
+        ipfs_address = self.ipfs.store(model.syft_obj)
         deploy_tx = self.get_transaction(
             model.owner,
             value=self.web3.toWei(model.bounty, 'ether'))
@@ -166,7 +166,7 @@ class ModelRepository():
         Currently any python object could be uploaded (which is obviously
         dangerous)."""
 
-        ipfs_address = self.ipfs.add_pyobj(grad)
+        ipfs_address = self.ipfs.store(grad)
         self.get_transaction(from_addr).addGradient(
             model_id, IPFSAddress().to_ethereum(ipfs_address))
         return self.call.getNumGradientsforModel(model_id) - 1
@@ -177,7 +177,7 @@ class ModelRepository():
             (owner, bounty, initial_error, target_error, mca) = \
                 self.call.getModel(model_id)
             syft_obj = \
-                self.ipfs.get_pyobj(IPFSAddress().from_ethereum(mca))
+                self.ipfs.retrieve(IPFSAddress().from_ethereum(mca))
             model = Model(owner, syft_obj, self.web3.fromWei(bounty, 'ether'),
                           initial_error, target_error, model_id, self)
 
