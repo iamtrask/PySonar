@@ -5,9 +5,12 @@ python:
 
 # install server dependencies
 before_install:
-  - "sudo apt-get install musl-dev g++ libgmp3-dev libmpfr-dev libmpc-dev gfortran liblapack-dev ca-certificates"
+  - "sudo apt-get install musl-dev g++ libgmp3-dev libmpfr-dev libmpc-dev gfortran liblapack-dev ca-certificates wget"
   - "pip install numpy"
   - "pip install scipy"
+  - "wget https://dist.ipfs.io/go-ipfs/v0.4.10/go-ipfs_v0.4.10_linux-amd64.tar.gz"
+  - "tar xvfz go-ipfs_v0.4.10_linux-amd64.tar.gz"
+  - "./go-ipfs/ipfs init && ./go-ipfs/ipfs daemon &"
 
 # install dependencies
 install:
