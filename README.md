@@ -48,7 +48,7 @@ Before running the demo there are a couple of prerequisites you need to install.
 
 Before installing the python packages you need to make sure your system holds a set of basic math libraries required for the encryption operations (`phe` lib)
 
-* [mpc](https://www.musicpd.org/clients/mpc/): Command-line music player client for mpd
+* [mpc](http://www.multiprecision.org/index.php?prog=mpc): arithmetic of complex numbers with arbitrarily high precision and correct rounding of the result
 * [mpfr](http://www.mpfr.org/): multiple-precision floating-point computations
 * [gmp](https://gmplib.org/): GNU multiple precision arithmetic library
 
