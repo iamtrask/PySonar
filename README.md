@@ -8,8 +8,7 @@
 <!-- TOC depthFrom:2 -->
 
 - [Setup](#setup)
-    - [Prerequisites](#prerequisites)
-    - [Installation](#installation)
+    - [Using Docker](#using-docker)
 - [Usage](#usage)
     - [Bootstrap environment](#bootstrap-environment)
     - [Start](#start)
@@ -24,19 +23,13 @@ You can find a working proof of concept in the [notebooks](./notebooks) director
 
 ## Setup
 
-### Prerequisites
+### Using Docker
 
-Using Docker is the easiest way to get this running.
+Using [Docker](https://www.docker.com) is the easiest way to get this running.
 
-* Install Docker from [its website](https://www.docker.com/)
-* For macOS users install from [here](https://docs.docker.com/docker-for-mac/)
-
-### Installation
-
-1. Run `docker-compose up`
-2. Look for the Jupyter notebook URL, it should look like `http://0.0.0.0:8888/?token=<long token here>` - open that URL in your web browser
-3. When running the notebooks, search the verbose output of the `docker-compose up` command for the `eth_getCode` -> `ModelRepository` address and copy into the last line of the cell under "Setting up the Experiment" as explained in the "ATTENTION" comment 🙂
-4. Step through the notebook
+1. Run `docker-compose up`. This will launch IPFS, the in-memory fake ethereum blockchain with the smart contract, [OpenMined mine.js](https://github.com/OpenMined/mine.js) and the jupyter notebooks
+2. Open the the Jupyter notebooks on [http://localhost:8888](http://localhost:8888)
+3. Step through the notebook and check the output of the previous `docker-compose up` to get some infos on what happens
 
 ## Usage
 

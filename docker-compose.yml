@@ -1,25 +1,16 @@
-version: '2'
+version: '3'
 services:
-  testrpc:
-    image: "harshjv/testrpc:latest"
-    command: ["-a", "1000", "-i", "25189"]
   ipfs:
-    image: "ipfs/go-ipfs:latest"
-    links:
-      - testrpc
-  sonar:
-    image: "openmined/sonar:latest"
-    links:
-      - testrpc
-    command: /bin/sh -c "sleep 10 && truffle migrate --network docker"
-  pysonar-notebooks:
+    image: ipfs/go-ipfs:latest
+  testrpc:
+    image: openmined/sonar-testrpc:hydrogen
+    command: ./node_modules/.bin/testrpc --host 0.0.0.0 --db "/data/testrpc_persist" --seed "20170812" --accounts 42
+  mine:
+    image: openmined/mine.js:hydrogen
+    command: ./node_modules/.bin/nodemon bin/cli.js train --mine-address auto --contract-address 0x249c008fc4f9c01248f557985f5b5b1aed8eb98f --ethereum-url http://testrpc:8545 --ipfs-url http://ipfs:5001
+    depends_on: [testrpc]
+  notebook:
     build:
       context: .
       dockerfile: Dockerfile.notebooks
-    volumes:
-      - ./notebooks:/notebooks
-    ports:
-      - 8888:8888
-    links:
-      - ipfs
-      - testrpc
+    ports: ["8888:8888"]
