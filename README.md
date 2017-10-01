@@ -75,6 +75,16 @@ Make sure you have a clean python3 install and continue with installing all the 
 pip install -r requirements.txt
 ```
 
+#### PIP package maintenance
+
+PySonar utilizes pip-tools to help with maintaining PIP packages
+(https://github.com/jazzband/pip-tools)
+
+To update all packages, periodically re-run
+```
+pip-compile --upgrade
+```
+
 #### Build local libraries
 
 First you need to get `sonar` package bundled up
