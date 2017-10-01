@@ -51,6 +51,12 @@ For MacOS with brew just run:
 brew install libmpc mpfr gmp
 ```
 
+For Linux run:
+
+```sh
+apt-get install libgmp3-dev libmpfr-dev libmpc-dev
+```
+
 #### Solidity
 
 The solidity tools are required to compile the contract of our demo.
