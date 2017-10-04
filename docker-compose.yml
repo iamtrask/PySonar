@@ -12,5 +12,5 @@ services:
   notebook:
     build:
       context: .
-      dockerfile: Dockerfile.notebooks
+      dockerfile: Dockerfile
     ports: ["8888:8888"]
