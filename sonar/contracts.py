@@ -124,7 +124,7 @@ class ModelRepository():
         self.contract_address = contract_address
 
         self.call = self.contract.call({
-            "from": self.web3.eth.accounts[2],
+            "from": self.account,
             "to": self.contract_address,
         })
         print("Connected to OpenMined ModelRepository:" +
@@ -190,8 +190,9 @@ class ModelRepository():
 
 class IPFSAddress:
     def from_ethereum(self, two_bytes32_representation):
-        return bytearray.fromhex("".join(two_bytes32_representation)
-                                 .replace("0x", "")).decode().replace("0", "")
+        return two_bytes32_representation[0] + two_bytes32_representation[1][0:14]
+#         return bytearray.fromhex("".join(two_bytes32_representation)
+#                                  .replace("0x", "")).decode().replace("0", "")
 
     def to_ethereum(self, ipfs_hash):
         return [ipfs_hash[0:32], ipfs_hash[32:]]
