@@ -44,6 +44,7 @@ Before installing the python packages you need to make sure your system holds a 
 * [mpc](http://www.multiprecision.org/index.php?prog=mpc): arithmetic of complex numbers with arbitrarily high precision and correct rounding of the result
 * [mpfr](http://www.mpfr.org/): multiple-precision floating-point computations
 * [gmp](https://gmplib.org/): GNU multiple precision arithmetic library
+* [npm](https://www.npmjs.com/): NPM Package Manager
 
 For MacOS with brew just run:
 
@@ -54,7 +55,7 @@ brew install libmpc mpfr gmp
 For Linux run:
 
 ```sh
-apt-get install libgmp3-dev libmpfr-dev libmpc-dev
+apt-get install libgmp3-dev libmpfr-dev libmpc-dev npm
 ```
 
 #### Solidity
