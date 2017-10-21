@@ -32,10 +32,10 @@ class Model():
         (gradient_id, grad_owner, mca, new_model_error,
          nwa) = self.repo.call.getGradient(self.model_id, gradient_id)
         grad_values = \
-            self.repo.ipfs.get_pyobj(IPFSAddress().from_ethereum(mca))
+            self.repo.ipfs.retrieve(IPFSAddress().from_ethereum(mca))
         if(new_model_error != 0):
             new_weights = \
-                self.repo.ipfs.get_pyobj(IPFSAddress().from_ethereum(nwa))
+                self.repo.ipfs.retrieve(IPFSAddress().from_ethereum(nwa))
         else:
             new_weights = None
             new_model_error = None
@@ -61,12 +61,13 @@ class Model():
 
         candidate = copy.deepcopy(self.syft_obj)
         candidate.weights -= gradient.grad_values * alpha
-        candidate.decrypt(prikey)
+        candidate.weights = candidate.weights.decrypt(prikey)
+        candidate.encrypted = False
 
         new_model_error = candidate.evaluate(inputs, targets)
 
         tx = self.repo.get_transaction(from_addr=addr)
-        ipfs_address = self.repo.ipfs.add_pyobj(candidate.encrypt(pubkey))
+        ipfs_address = self.repo.ipfs.store(candidate.encrypt(pubkey))
         tx.evalGradient(gradient.id, new_model_error,
                         IPFSAddress().to_ethereum(ipfs_address))
 
