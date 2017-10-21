@@ -63,6 +63,13 @@ apt-get install libgmp3-dev libmpfr-dev libmpc-dev npm
 The solidity tools are required to compile the contract of our demo.
 See [installing solidity](http://solidity.readthedocs.io/en/develop/installing-solidity.html) for instructions for your platform.
 
+#### Truffle
+
+In order to import ABIs you'll need to install [truffle](https://www.npmjs.com/package/truffle).
+```
+npm install truffle
+```
+
 #### IPFS
 
 As the network itself is too big to actually host it on the blockchain you need `IPFS` to host the files.
