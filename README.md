@@ -67,7 +67,7 @@ See [installing solidity](http://solidity.readthedocs.io/en/develop/installing-s
 
 In order to import ABIs you'll need to install [truffle](https://www.npmjs.com/package/truffle).
 ```
-npm install truffle
+sudo npm install -g truffle
 ```
 
 #### IPFS
