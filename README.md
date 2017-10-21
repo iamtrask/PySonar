@@ -54,7 +54,7 @@ brew install libmpc mpfr gmp
 For Linux run:
 
 ```sh
-apt-get install libgmp3-dev libmpfr-dev libmpc-dev
+apt-get install libgmp3-dev libmpfr-dev libmpc-dev python3-dev
 ```
 
 #### Solidity
