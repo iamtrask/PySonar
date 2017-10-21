@@ -55,7 +55,14 @@ brew install libmpc mpfr gmp
 For Linux run:
 
 ```sh
-apt-get install libgmp3-dev libmpfr-dev libmpc-dev npm
+apt-get install libgmp3-dev libmpfr-dev libmpc-dev
+```
+
+Then run:
+
+```
+curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.5/install.sh | bash
+nvm install v8
 ```
 
 #### Solidity
