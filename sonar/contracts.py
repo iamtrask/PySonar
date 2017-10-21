@@ -190,10 +190,10 @@ class ModelRepository():
 
 
 class IPFSAddress:
-    def from_ethereum(self, two_bytes32_representation):
-        return two_bytes32_representation[0] + two_bytes32_representation[1][0:14]
+    def from_ethereum(self, two_bytes32_rep):
+        return two_bytes32_rep[0] + two_bytes32_rep[1][0:14]
 #         return bytearray.fromhex("".join(two_bytes32_representation)
-#                                  .replace("0x", "")).decode().replace("0", "")
+#                        .replace("0x", "")).decode().replace("0", "")
 
     def to_ethereum(self, ipfs_hash):
         return [ipfs_hash[0:32], ipfs_hash[32:]]
