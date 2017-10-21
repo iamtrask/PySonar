@@ -44,6 +44,7 @@ Before installing the python packages you need to make sure your system holds a 
 * [mpc](http://www.multiprecision.org/index.php?prog=mpc): arithmetic of complex numbers with arbitrarily high precision and correct rounding of the result
 * [mpfr](http://www.mpfr.org/): multiple-precision floating-point computations
 * [gmp](https://gmplib.org/): GNU multiple precision arithmetic library
+* [npm](https://www.npmjs.com/): NPM Package Manager
 
 For MacOS with brew just run:
 
@@ -57,10 +58,24 @@ For Linux run:
 apt-get install libgmp3-dev libmpfr-dev libmpc-dev
 ```
 
+Then run:
+
+```
+curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.5/install.sh | bash
+nvm install v8
+```
+
 #### Solidity
 
 The solidity tools are required to compile the contract of our demo.
 See [installing solidity](http://solidity.readthedocs.io/en/develop/installing-solidity.html) for instructions for your platform.
+
+#### Truffle
+
+In order to import ABIs you'll need to install [truffle](https://www.npmjs.com/package/truffle).
+```
+sudo npm install -g truffle
+```
 
 #### IPFS
 
