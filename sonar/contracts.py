@@ -61,12 +61,13 @@ class Model():
 
         candidate = copy.deepcopy(self.syft_obj)
         candidate.weights -= gradient.grad_values * alpha
-        candidate.decrypt(prikey)
+        candidate.weights = candidate.weights.decrypt(prikey)
+        candidate.encrypted = False
 
         new_model_error = candidate.evaluate(inputs, targets)
 
         tx = self.repo.get_transaction(from_addr=addr)
-        ipfs_address = self.repo.ipfs.add_pyobj(candidate.encrypt(pubkey))
+        ipfs_address = self.repo.ipfs.store(candidate.encrypt(pubkey))
         tx.evalGradient(gradient.id, new_model_error,
                         IPFSAddress().to_ethereum(ipfs_address))
 
