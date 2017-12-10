@@ -95,15 +95,14 @@ class ModelRepository():
     currently assumes you're running on a local testrpc Ethereum blockchain."""
 
     def __init__(self, contract_address, account=None,
-                 ipfs=IPFS('127.0.0.1', 5001),
-                 web3_host='localhost', web3_port=8545):
+                 ipfs=IPFS('127.0.0.1', 5001), web3=Web3(KeepAliveRPCProvider(host='127.0.0.1',
+                                              port=str(8545)))):
         """Creates the base blockchain client object (web3) then
          connects to the Sonar contract.
         It assumes you're working with a local testrpc blockchain."""
 
         self.ipfs = ipfs
-        self.web3 = Web3(KeepAliveRPCProvider(host=web3_host,
-                                              port=str(web3_port)))
+        self.web3 = web3
 
         if account is not None:
             self.account = account
