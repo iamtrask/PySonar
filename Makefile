@@ -5,4 +5,4 @@ test:
 
 import-abi:
 	npm install && \
-	cp node_modules/@openmined/sonar/build/*.abi abis/
+	cp node_modules/@openmined/sonar/build/contracts/*.abi abis/
