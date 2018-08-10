@@ -28,7 +28,7 @@ You can find a working proof of concept in the [notebooks](./notebooks) director
 Using [Docker](https://www.docker.com) is the easiest way to get this running.
 
 1. Run `docker-compose up`. This will launch IPFS, the in-memory fake ethereum blockchain with the smart contract, [OpenMined mine.js](https://github.com/OpenMined/mine.js) and the jupyter notebooks
-2. Open the the Jupyter notebooks on [http://localhost:8888](http://localhost:8888)
+2. Open the Jupyter notebooks on [http://localhost:8888](http://localhost:8888)
 3. Step through the notebook and check the output of the previous `docker-compose up` to get some infos on what happens
 
 ## Usage
