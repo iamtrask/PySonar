@@ -4,33 +4,77 @@
 #
 #    pip-compile --output-file requirements.txt requirements.in
 #
-certifi==2017.7.27.1      # via requests
-chardet==3.0.4            # via requests
-configparser==3.5.0       # via flake8
-cytoolz==0.8.2            # via ethereum-utils, web3
-enum34==1.1.6             # via flake8
-ethereum-abi-utils==0.4.3  # via web3
-ethereum-utils==0.4.1     # via ethereum-abi-utils, web3
-flake8==3.4.1             # via pytest-flake8
-gmpy2==2.0.8              # via phe
-idna==2.6                 # via requests
+certifi==2017.7.27.1
+    # via requests
+chardet==3.0.4
+    # via requests
+configparser==3.5.0
+    # via flake8
+cytoolz==0.8.2
+    # via
+    #   ethereum-utils
+    #   web3
+enum34==1.1.6
+    # via flake8
+ethereum-abi-utils==0.4.3
+    # via web3
+ethereum-utils==0.4.1
+    # via
+    #   ethereum-abi-utils
+    #   web3
+flake8==3.4.1
+    # via pytest-flake8
+gmpy2==2.0.8
+    # via phe
+idna==2.6
+    # via requests
 ipfsapi==0.4.2.post1
-mccabe==0.6.1             # via flake8
+    # via -r requirements.in
+mccabe==0.6.1
+    # via flake8
 multihash==0.1.1
+    # via -r requirements.in
 numpy==1.13.1
+    # via
+    #   -r requirements.in
+    #   scipy
 phe==1.3.0
-py==1.4.34                # via pytest
-pycodestyle==2.3.1        # via flake8
-pyflakes==1.5.0           # via flake8
-pylru==1.0.9              # via web3
-pysha3==1.0.2             # via ethereum-utils, web3
+    # via -r requirements.in
+py==1.10.0
+    # via pytest
+pycodestyle==2.3.1
+    # via flake8
+pyflakes==1.5.0
+    # via flake8
+pylru==1.0.9
+    # via web3
+pysha3==1.0.2
+    # via
+    #   ethereum-utils
+    #   web3
 pytest-flake8==0.8.1
+    # via -r requirements.in
 pytest==3.2.2
-requests==2.18.4          # via ipfsapi, web3
-rlp==0.6.0                # via web3
+    # via
+    #   -r requirements.in
+    #   pytest-flake8
+requests==2.18.4
+    # via
+    #   ipfsapi
+    #   web3
+rlp==0.6.0
+    # via web3
 scikit-learn==0.19.0
+    # via -r requirements.in
 scipy==0.19.1
-six==1.11.0               # via ipfsapi
-toolz==0.8.2              # via cytoolz, web3
-urllib3==1.22             # via requests
+    # via -r requirements.in
+six==1.11.0
+    # via ipfsapi
+toolz==0.8.2
+    # via
+    #   cytoolz
+    #   web3
+urllib3==1.22
+    # via requests
 web3==3.15.0
+    # via -r requirements.in
